@@ -1,0 +1,88 @@
+.users-panel {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+
+.admin-header {
+  background: var(--color-surface);
+  padding: 1.25rem 5vw;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.admin-header nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.users-panel ol {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.users-panel li {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  background: var(--color-background);
+  box-shadow: var(--shadow-sm);
+}
+
+.users-panel li h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.users-panel li p {
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.users-panel menu {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.users-panel button {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.users-panel button:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.users-panel button[data-action-label="Banir"],
+.users-panel button[data-action-label="Suspender"] {
+  color: var(--color-danger);
+  border-color: currentColor;
+}
+
+.users-panel button[data-action-label="Banir"]:hover,
+.users-panel button[data-action-label="Suspender"]:hover {
+  background: var(--color-danger);
+  color: white;
+}

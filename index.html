@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow — Produtividade Acadêmica</title>
+  <link rel="stylesheet" href="views/assets/_common/styles/base.css">
+  <link rel="stylesheet" href="views/assets/public/styles/home.css">
+</head>
+<body>
+    <header class="public-header">
+        <nav aria-label="Navegação principal">
+            <a class="brand" href="index.html">TaskFlow</a>
+            <button id="btn-menu" type="button" aria-expanded="false" aria-controls="public-menu">Menu</button>
+            <ul id="public-menu" hidden>
+                <li><a href="views/login.php">Login</a></li>
+                <li><a class="cta-primary" href="views/register.php">Criar conta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" aria-labelledby="hero-title">
+            <article>
+                <h1 id="hero-title">Organize sua rotina acadêmica em um só lugar.</h1>
+                <p>O TaskFlow ajuda você a planejar, executar e acompanhar tarefas com clareza e foco.</p>
+                <p>
+                    <a class="cta-primary" href="views/register.php">Começar agora</a>
+                </p>
+            </article>
+            <article aria-label="Benefícios">
+                <h2>Ganhe ritmo e consistência</h2>
+                <ul class="feature-list">
+                    <li class="feature-card">Quadro de tarefas com 4 status claros.</li>
+                    <li class="feature-card">Métricas semanais para acompanhar seu progresso.</li>
+                    <li class="feature-card">Filtros por disciplina e prioridade.</li>
+                </ul>
+            </article>
+        </section>
+    </main>
+
+    <footer class="public-footer">
+        <p>TaskFlow · Estudo organizado, resultados consistentes.</p>
+    </footer>
+
+    <script src="views/assets/public/scripts/home.js"></script>
+</body>
+</html>
