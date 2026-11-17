@@ -1,0 +1,6 @@
+/.idea
+/.opencode
+/api/.env
+/storage
+/uploads
+composer.lock

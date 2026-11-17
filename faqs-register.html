@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de FAQs — TaskFlow</title>
+    <link rel="stylesheet" href="views/assets/public/styles/styles.css">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body style="background: var(--surface-bg); padding: 2rem;">
+
+    <div class="form-container">
+        <h2 style="margin-bottom: 1rem; color: var(--text-primary);">Cadastrar Nova FAQ</h2>
+        <form id="faqs-register-form" class="auth-form">
+            <div class="form-group">
+                <label>ID da Categoria (ex: 1 para Geral):</label>
+                <input type="number" name="faqs_category_id" value="1" required>
+            </div>
+            <div class="form-group">
+                <label>Pergunta:</label>
+                <input type="text" name="question" placeholder="Ex: Como criar uma tarefa?" required>
+            </div>
+            <div class="form-group">
+                <label>Resposta:</label>
+                <textarea name="answer" rows="4" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);" placeholder="Explicação detalhada..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Salvar FAQ</button>
+            <a href="index.html" class="btn btn-secondary" style="margin-top: 0.5rem; text-align: center;">Voltar para Início</a>
+        </form>
+    </div>
+
+    <script type="module" src="views/assets/public/scripts/faqs-register.js"></script>
+</body>
+</html>

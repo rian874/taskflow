@@ -1,0 +1,667 @@
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskFlow — Organize seus projetos, tarefas e rotinas diárias com foco em produtividade e organização.">
+    <title>TaskFlow — Gestão de Tarefas e Produtividade</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M9 16l5 5 9-9' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Shared Toast & Form Styles -->
+    <link rel="stylesheet" href="views/assets/_common/styles/toast.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="views/assets/public/styles/styles.css">
+</head>
+<body>
+
+    <!-- CABEÇALHO & NAVEGAÇÃO -->
+    <header id="header" class="site-header" role="banner">
+        <div class="header-container">
+            <a href="index.html" class="brand-logo" aria-label="TaskFlow — Página inicial">
+                <div class="brand-icon">
+                    <i data-lucide="check-square" style="width: 20px; height: 20px;"></i>
+                </div>
+                Task<span>Flow</span>
+            </a>
+
+            <nav class="nav-links" aria-label="Navegação principal">
+                <a href="#recursos" class="nav-link">Recursos</a>
+                <a href="#como-funciona" class="nav-link">Como Funciona</a>
+                <a href="#depoimentos" class="nav-link">Depoimentos</a>
+                <a href="#planos" class="nav-link">Planos</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+            </nav>
+
+            <div class="header-actions">
+                <button type="button" class="btn btn-secondary" data-auth-open="login">Entrar</button>
+                <button type="button" class="btn btn-primary" data-auth-open="register">Começar Grátis</button>
+            </div>
+
+            <button type="button" id="mobile-menu-btn" class="mobile-toggle" aria-label="Abrir menu mobile">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MENU MOBILE -->
+    <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+        <div class="mobile-menu-header">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon"><i data-lucide="check-square"></i></div>
+                Task<span>Flow</span>
+            </a>
+            <button type="button" id="mobile-menu-close" class="mobile-toggle" aria-label="Fechar menu">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a href="#recursos">Recursos</a>
+            <a href="#como-funciona">Como Funciona</a>
+            <a href="#depoimentos">Depoimentos</a>
+            <a href="#planos">Planos</a>
+            <a href="#faq">Perguntas Frequentes</a>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+            <button type="button" class="btn btn-secondary" data-auth-open="login" style="width: 100%;">Entrar na Conta</button>
+            <button type="button" class="btn btn-primary" data-auth-open="register" style="width: 100%; margin-top: 0.5rem;">Criar Conta Gratuita</button>
+        </nav>
+    </div>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-container animate-on-scroll">
+                <div class="badge">
+                    <i data-lucide="sparkles" style="width: 15px; height: 15px;"></i>
+                    Organização de tarefas e rotina
+                </div>
+                
+                <h1 class="hero-title">
+                    Organize sua rotina e acompanhe suas <span class="gradient-text">tarefas</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Centralize atividades, defina prioridades, acompanhe prazos e mantenha suas entregas em dia em um único lugar.
+                </p>
+                
+                <div class="hero-cta">
+                    <button type="button" class="btn btn-primary btn-lg" data-auth-open="register">
+                        Começar Gratuitamente
+                        <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+                    </button>
+                    <a href="#como-funciona" class="btn btn-secondary btn-lg">
+                        <i data-lucide="play-circle" style="width: 18px; height: 18px;"></i>
+                        Como Funciona
+                    </a>
+                </div>
+
+                <!-- PREVIEW DA APLICAÇÃO -->
+                <div class="hero-preview-wrapper" id="hero-demo">
+                    <div class="float-pill float-pill--left">
+                        <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+                        +42% foco nas entregas
+                    </div>
+                    <div class="float-pill float-pill--right">
+                        <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
+                        Prazos em dia
+                    </div>
+
+                    <div class="hero-window">
+                        <div class="hero-window__bar">
+                            <div class="window-dots">
+                                <span class="window-dot red"></span>
+                                <span class="window-dot yellow"></span>
+                                <span class="window-dot green"></span>
+                            </div>
+                            <div class="window-title">
+                                <i data-lucide="layout-grid" style="width: 13px; height: 13px;"></i>
+                                taskflow / minhas-tarefas
+                            </div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">
+                                Painel
+                            </div>
+                        </div>
+
+                        <div class="hero-window__body">
+                            <div class="mockup-header">
+                                <div class="mockup-title">
+                                    <h4>Minhas Tarefas do Dia</h4>
+                                    <p>Acompanhe o andamento das atividades planejadas para hoje.</p>
+                                </div>
+                                <div class="mockup-progress">
+                                    <span style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);">Progresso:</span>
+                                    <div class="progress-track">
+                                        <div class="progress-fill" id="mockup-progress-fill" style="width: 75%;"></div>
+                                    </div>
+                                    <span class="progress-text" id="mockup-progress-text">3/4 (75%)</span>
+                                </div>
+                            </div>
+
+                            <div class="mockup-tasks">
+                                <div class="mockup-task-item is-done">
+                                    <div class="task-checkbox-wrap">
+                                        <div class="task-checkbox">
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                        <span class="task-label">Preparar apresentação da reunião semanal</span>
+                                    </div>
+                                    <div class="task-meta">
+                                        <span class="priority-pill alta">Alta Prioridade</span>
+                                    </div>
+                                </div>
+
+                                <div class="mockup-task-item is-done">
+                                    <div class="task-checkbox-wrap">
+                                        <div class="task-checkbox">
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                        <span class="task-label">Revisar entregas do projeto com a equipe</span>
+                                    </div>
+                                    <div class="task-meta">
+                                        <span class="priority-pill alta">Alta Prioridade</span>
+                                    </div>
+                                </div>
+
+                                <div class="mockup-task-item is-done">
+                                    <div class="task-checkbox-wrap">
+                                        <div class="task-checkbox">
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                        <span class="task-label">Atualizar cronograma de atividades do mês</span>
+                                    </div>
+                                    <div class="task-meta">
+                                        <span class="priority-pill media">Média Prioridade</span>
+                                    </div>
+                                </div>
+
+                                <div class="mockup-task-item">
+                                    <div class="task-checkbox-wrap">
+                                        <div class="task-checkbox">
+                                            <i data-lucide="check"></i>
+                                        </div>
+                                        <span class="task-label">Organizar prioridades da próxima semana</span>
+                                    </div>
+                                    <div class="task-meta">
+                                        <span class="priority-pill baixa">Baixa Prioridade</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTADORES NUMÉRICOS -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3 data-count="99" data-suffix="%">99%</h3>
+                        <p>Entregas no Prazo</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 data-count="50" data-suffix="k+">50k+</h3>
+                        <p>Tarefas Concluídas</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 data-count="12" data-suffix="k+">12k+</h3>
+                        <p>Usuários Ativos</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 data-count="4" data-suffix=".9 ★">4.9 ★</h3>
+                        <p>Avaliação Média</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: COMO FUNCIONA -->
+        <section id="como-funciona" class="section">
+            <div class="section-container">
+                <header class="section-header animate-on-scroll">
+                    <span class="section-kicker">Passo a Passo</span>
+                    <h2>Como o TaskFlow simplifica seu dia</h2>
+                    <p>Em três etapas simples, você organiza suas demandas e acompanha cada entrega.</p>
+                </header>
+
+                <div class="workflow-grid">
+                    <div class="workflow-card animate-on-scroll">
+                        <span class="workflow-step">01</span>
+                        <h3>Centralize e Organize</h3>
+                        <p>Reúna tarefas, ideias e compromissos em um único painel. Cadastre novas atividades em segundos.</p>
+                    </div>
+
+                    <div class="workflow-card animate-on-scroll">
+                        <span class="workflow-step">02</span>
+                        <h3>Priorize com Clareza</h3>
+                        <p>Classifique por urgência (Alta, Média ou Baixa) e defina prazos de entrega para focar no que é mais importante.</p>
+                    </div>
+
+                    <div class="workflow-card animate-on-scroll">
+                        <span class="workflow-step">03</span>
+                        <h3>Acompanhe e Conclua</h3>
+                        <p>Filtre tarefas por status, anexe imagens de referência e acompanhe o progresso diário.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: RECURSOS -->
+        <section id="recursos" class="section" style="background: white;">
+            <div class="section-container">
+                <header class="section-header animate-on-scroll">
+                    <span class="section-kicker">Funcionalidades</span>
+                    <h2>Recursos pensados para a sua rotina</h2>
+                    <p>Ferramentas práticas para manter o foco e acompanhar suas metas.</p>
+                </header>
+
+                <div class="cards-grid">
+                    <article class="card animate-on-scroll">
+                        <div class="card-top">
+                            <div class="card-icon"><i data-lucide="check-circle-2"></i></div>
+                            <span class="card-tag">Essencial</span>
+                        </div>
+                        <h3>Controle de Prioridades</h3>
+                        <p>Identifique rapidamente itens urgentes com indicadores visuais para não perder prazos importantes.</p>
+                    </article>
+
+                    <article class="card animate-on-scroll">
+                        <div class="card-top">
+                            <div class="card-icon"><i data-lucide="calendar"></i></div>
+                            <span class="card-tag">Planejamento</span>
+                        </div>
+                        <h3>Prazos e Datas Limite</h3>
+                        <p>Defina datas de entrega para cada atividade e tenha uma visão clara das próximas demandas.</p>
+                    </article>
+
+                    <article class="card animate-on-scroll">
+                        <div class="card-top">
+                            <div class="card-icon"><i data-lucide="image"></i></div>
+                            <span class="card-tag">Anexos</span>
+                        </div>
+                        <h3>Galeria de Imagens por Tarefa</h3>
+                        <p>Associe imagens, comprovantes e referências visuais diretamente a cada tarefa cadastrada.</p>
+                    </article>
+
+                    <article class="card animate-on-scroll">
+                        <div class="card-top">
+                            <div class="card-icon"><i data-lucide="shield-check"></i></div>
+                            <span class="card-tag">Segurança</span>
+                        </div>
+                        <h3>Conta e Perfil Pessoal</h3>
+                        <p>Gerencie seus dados de acesso, senha e foto de perfil com sessão protegida e individual.</p>
+                    </article>
+
+                    <article class="card animate-on-scroll">
+                        <div class="card-top">
+                            <div class="card-icon"><i data-lucide="smartphone"></i></div>
+                            <span class="card-tag">Responsivo</span>
+                        </div>
+                        <h3>Acesso em Qualquer Tela</h3>
+                        <p>Utilize seu painel no computador, notebook, tablet ou celular com layout adaptável.</p>
+                    </article>
+
+                    <article class="card animate-on-scroll">
+                        <div class="card-top">
+                            <div class="card-icon"><i data-lucide="bar-chart-3"></i></div>
+                            <span class="card-tag">Resumo</span>
+                        </div>
+                        <h3>Indicadores de Andamento</h3>
+                        <p>Visualize o total de tarefas criadas, pendentes e concluídas em tempo real no painel.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: DEPOIMENTOS -->
+        <section id="depoimentos" class="section">
+            <div class="section-container">
+                <header class="section-header animate-on-scroll">
+                    <span class="section-kicker">Avaliações</span>
+                    <h2>O que nossos usuários dizem</h2>
+                    <p>Profissionais e estudantes que organizam suas rotinas com o TaskFlow.</p>
+                </header>
+
+                <div class="testimonials-grid">
+                    <article class="testimonial-card animate-on-scroll">
+                        <div>
+                            <div class="stars">
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "O TaskFlow mudou a forma como organizamos as demandas da semana. A separação por prioridades ajudou muito a visualizar o que precisava ser entregue primeiro."
+                            </p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar">MC</div>
+                            <div class="testimonial-info">
+                                <strong>Mariana Costa</strong>
+                                <span>Coordenadora de Projetos</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="testimonial-card animate-on-scroll">
+                        <div>
+                            <div class="stars">
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "Interface limpa e direta ao ponto. Consigo cadastrar minhas tarefas, anexar imagens de referência e acompanhar tudo sem perder tempo com planilhas."
+                            </p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar">RS</div>
+                            <div class="testimonial-info">
+                                <strong>Rafael Silveira</strong>
+                                <span>Analista de Sistemas</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="testimonial-card animate-on-scroll">
+                        <div>
+                            <div class="stars">
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                                <i data-lucide="star"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "Muito prático para o dia a dia. Os filtros por status e a busca rápida facilitam bastante quando tenho várias entregas na mesma semana."
+                            </p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar">JA</div>
+                            <div class="testimonial-info">
+                                <strong>Juliana Alves</strong>
+                                <span>Designer de Produto</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: PLANOS & PREÇOS -->
+        <section id="planos" class="section" style="background: white;">
+            <div class="section-container">
+                <header class="section-header animate-on-scroll">
+                    <span class="section-kicker">Planos</span>
+                    <h2>Planos para cada necessidade</h2>
+                    <p>Comece gratuitamente e escolha o plano ideal para sua rotina.</p>
+                </header>
+
+                <div class="pricing-toggle-wrap animate-on-scroll">
+                    <span class="pricing-toggle-label is-active" data-pricing-label="monthly">Cobrança Mensal</span>
+                    <div class="pricing-switch" id="pricing-switcher" role="switch" aria-checked="false" title="Alternar entre cobrança mensal e anual">
+                        <div class="pricing-switch-thumb"></div>
+                    </div>
+                    <span class="pricing-toggle-label" data-pricing-label="annual">
+                        Cobrança Anual <span class="badge-discount">-20% OFF</span>
+                    </span>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="pricing-card animate-on-scroll">
+                        <h3>Starter</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Ideal para organização pessoal e estudos.</p>
+                        <div class="pricing-price">R$ 0 <span>/mês</span></div>
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check"></i> Até 50 tarefas ativas</li>
+                            <li><i data-lucide="check"></i> Classificação por prioridades e prazos</li>
+                            <li><i data-lucide="check"></i> Acesso web e mobile</li>
+                            <li><i data-lucide="check"></i> Galeria de anexos por tarefa</li>
+                            <li><i data-lucide="check"></i> Suporte padrão</li>
+                        </ul>
+                        <button type="button" class="btn btn-secondary" data-auth-open="register" style="width: 100%;">
+                            Começar Gratuitamente
+                        </button>
+                    </div>
+
+                    <div class="pricing-card featured animate-on-scroll">
+                        <span class="badge-featured">Mais Escolhido</span>
+                        <h3>Pro</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Para profissionais que precisam de recursos completos.</p>
+                        <div class="pricing-price">
+                            <span id="pro-price-val">R$ 29</span>
+                            <span id="pro-period-label">/mês</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i data-lucide="check"></i> Tarefas e projetos ilimitados</li>
+                            <li><i data-lucide="check"></i> Indicadores de desempenho</li>
+                            <li><i data-lucide="check"></i> Múltiplos anexos por tarefa</li>
+                            <li><i data-lucide="check"></i> Organização avançada por filtros</li>
+                            <li><i data-lucide="check"></i> Suporte prioritário</li>
+                        </ul>
+                        <button type="button" class="btn btn-primary" data-auth-open="register" style="width: 100%;">
+                            Assinar Plano Pro
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: PERGUNTAS FREQUENTES (FAQS VINDAS DO BACKEND) -->
+        <section id="faq" class="section">
+            <div class="section-container faq-container">
+                <header class="section-header animate-on-scroll">
+                    <span class="section-kicker">Dúvidas</span>
+                    <h2>Perguntas Frequentes</h2>
+                    <p>Encontre respostas sobre o funcionamento do TaskFlow, conta e planos.</p>
+                </header>
+
+                <!-- Controles dinâmicos de filtro e busca -->
+                <div class="faq-controls animate-on-scroll" id="faq-controls-container"></div>
+
+                <!-- Lista de FAQs carregada da API GET /faqs -->
+                <dl id="list-faqs" class="faq-list animate-on-scroll">
+                    <div class="faq-loading">
+                        <div class="faq-spinner"></div>
+                        <p>Carregando perguntas frequentes...</p>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <section class="section section-dark" style="text-align: center; position: relative; overflow: hidden;">
+            <div class="section-container animate-on-scroll" style="max-width: 760px; position: relative; z-index: 2;">
+                <h2 style="font-size: clamp(2rem, 3.5vw, 2.75rem); font-weight: 800; margin-bottom: 1.2rem; letter-spacing: -0.03em;">
+                    Pronto para organizar melhor sua rotina?
+                </h2>
+                <p style="color: var(--text-muted); font-size: 1.15rem; margin-bottom: 2.2rem; line-height: 1.6;">
+                    Crie sua conta gratuitamente e comece a gerenciar suas tarefas agora mesmo.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-primary btn-lg" data-auth-open="register">
+                        Criar Minha Conta Grátis
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="brand-logo" style="color: white;">
+                    <div class="brand-icon"><i data-lucide="check-square"></i></div>
+                    Task<span>Flow</span>
+                </div>
+                <p>Plataforma para organização de rotinas, projetos e tarefas diárias.</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#recursos">Recursos</a></li>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#planos">Planos</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Conta</h4>
+                <ul>
+                    <li><a href="app/index.html">Acessar Painel</a></li>
+                    <li><a href="#planos">Comparar Planos</a></li>
+                    <li><a href="#faq">Central de Dúvidas</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Contato</h4>
+                <ul>
+                    <li><a href="mailto:contato@taskflow.com.br">contato@taskflow.com.br</a></li>
+                    <li><a href="#faq">Suporte</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>&copy; 2026 TaskFlow. Todos os direitos reservados.</span>
+        </div>
+    </footer>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <button id="back-to-top" class="back-to-top" aria-label="Voltar ao início da página">
+        <i data-lucide="arrow-up" style="width: 20px; height: 20px;"></i>
+    </button>
+
+    <!-- MODAL DE AUTENTICAÇÃO (LOGIN & CADASTRO) -->
+    <dialog id="auth-modal" class="auth-modal" aria-labelledby="auth-modal-title">
+        <div class="auth-modal__content">
+            <button type="button" class="auth-modal__close" data-auth-close aria-label="Fechar janela de autenticação">
+                <i data-lucide="x"></i>
+            </button>
+
+            <header class="auth-modal__header">
+                <div class="brand-logo" style="justify-content: center; margin-bottom: 0.6rem;">
+                    <div class="brand-icon"><i data-lucide="check-square"></i></div>
+                    Task<span>Flow</span>
+                </div>
+                <h2 id="auth-modal-title">Acesse sua conta</h2>
+                <p>Entre com seus dados ou cadastre-se para organizar suas tarefas.</p>
+            </header>
+
+            <nav class="auth-tabs" aria-label="Opções de autenticação">
+                <button type="button" class="auth-tab is-active" data-auth-tab="login" aria-selected="true">Login</button>
+                <button type="button" class="auth-tab" data-auth-tab="register" aria-selected="false">Cadastro</button>
+            </nav>
+
+            <div class="auth-feedback" data-auth-feedback role="alert"></div>
+
+            <!-- PAINEL: LOGIN -->
+            <section class="auth-panel is-active" data-auth-panel="login">
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">E-mail</label>
+                        <input id="login-email" name="email" type="email" autocomplete="username" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label for="login-password">Senha</label>
+                            <button type="button" data-auth-tab-trigger="forgot" style="font-size: 0.78rem; color: var(--primary); font-weight: 600;">Esqueceu a senha?</button>
+                        </div>
+                        <div class="input-password-wrap">
+                            <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required>
+                            <button type="button" class="btn-toggle-password" data-toggle-password="login-password" aria-label="Mostrar ou ocultar senha">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                        Entrar
+                    </button>
+                </form>
+            </section>
+
+            <!-- PAINEL: CADASTRO -->
+            <section class="auth-panel" data-auth-panel="register" hidden>
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-name">Nome Completo</label>
+                        <input id="register-name" name="name" type="text" autocomplete="name" placeholder="Seu nome" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-email">E-mail</label>
+                        <input id="register-email" name="email" type="email" autocomplete="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password">Senha (mínimo 6 caracteres)</label>
+                        <div class="input-password-wrap">
+                            <input id="register-password" name="password" type="password" autocomplete="new-password" minlength="6" placeholder="••••••••" required>
+                            <button type="button" class="btn-toggle-password" data-toggle-password="register-password" aria-label="Mostrar ou ocultar senha">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                        Criar Conta
+                    </button>
+                </form>
+            </section>
+
+            <!-- PAINEL: RECUPERAR SENHA -->
+            <section class="auth-panel" data-auth-panel="forgot" hidden>
+                <form id="forgot-form" class="auth-form">
+                    <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+                        Informe o e-mail cadastrado para receber as instruções de recuperação de acesso.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="forgot-email">E-mail Cadastrado</label>
+                        <input id="forgot-email" name="email" type="email" autocomplete="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                        Enviar Instruções
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" data-auth-tab-trigger="login" style="width: 100%; margin-top: 0.5rem;">
+                        Voltar para o Login
+                    </button>
+                </form>
+            </section>
+        </div>
+    </dialog>
+
+    <!-- Custom Scripts -->
+    <script type="module" src="views/assets/public/scripts/scripts.js"></script>
+    <script type="module" src="views/assets/public/scripts/auth-modal.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>

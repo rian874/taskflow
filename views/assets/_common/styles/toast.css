@@ -1,0 +1,148 @@
+/* =====================================================
+   TaskFlow — Toast Notifications & Prototypic Form Styles
+   ===================================================== */
+
+.tf-toast-container {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 420px;
+    width: calc(100% - 3rem);
+    pointer-events: none;
+}
+
+.tf-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    background: #FFFFFF;
+    color: #0F172A;
+    padding: 0.95rem 1.15rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #E2E8F0;
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateX(30px) scale(0.96);
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tf-toast.is-visible {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+.tf-toast.is-hiding {
+    opacity: 0;
+    transform: translateX(30px) scale(0.96);
+}
+
+.tf-toast__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    margin-top: -2px;
+}
+
+.tf-toast__body {
+    flex-grow: 1;
+}
+
+.tf-toast__msg {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    font-weight: 500;
+    color: #1E293B;
+    margin: 0;
+}
+
+.tf-toast__close {
+    background: transparent;
+    border: none;
+    color: #94A3B8;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    margin-top: -2px;
+}
+
+.tf-toast__close:hover {
+    color: #0F172A;
+    background: #F1F5F9;
+}
+
+/* Modificadores de Tipo: success (verde), warning (amarelo), error (vermelho) */
+.tf-toast--success {
+    border-left: 4px solid #10B981;
+}
+.tf-toast--success .tf-toast__icon {
+    background: #ECFDF5;
+    color: #059669;
+}
+
+.tf-toast--warning {
+    border-left: 4px solid #F59E0B;
+}
+.tf-toast--warning .tf-toast__icon {
+    background: #FFFBEB;
+    color: #D97706;
+}
+
+.tf-toast--error {
+    border-left: 4px solid #EF4444;
+}
+.tf-toast--error .tf-toast__icon {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+/* Estilos de Validação de Formulários via FormController */
+.has-error {
+    border-color: #EF4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.tf-field-error {
+    display: block;
+    font-size: 0.78rem;
+    color: #EF4444;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.tf-btn-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: tf-spin 0.6s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+@keyframes tf-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+    .tf-toast-container {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+    }
+}

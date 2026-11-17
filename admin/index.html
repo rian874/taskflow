@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel administrativo do TaskFlow — Gestão de FAQs, Categorias e Conteúdo.">
+    <title>Painel Administrativo — TaskFlow</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%234F46E5'/><path d='M9 16l5 5 9-9' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Shared Toast & Form Styles -->
+    <link rel="stylesheet" href="../views/assets/_common/styles/toast.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="../views/assets/admin/styles/admin.css">
+</head>
+<body>
+
+    <!-- =====================================================
+         TELA DE LOGIN ADMINISTRATIVO
+         ===================================================== -->
+    <main id="admin-login-view" class="admin-login">
+        <section class="admin-login__card" aria-labelledby="admin-login-title">
+            <a class="admin-brand" href="../index.html" aria-label="Voltar para a página inicial do TaskFlow">
+                <span class="admin-brand__icon">
+                    <i data-lucide="check-square" aria-hidden="true"></i>
+                </span>
+                Task<span>Flow</span>
+            </a>
+
+            <span class="admin-login__eyebrow">
+                <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+                Área Restrita
+            </span>
+
+            <h1 id="admin-login-title">Acesso Administrativo</h1>
+            <p>Gerencie perguntas frequentes, categorias e configurações do TaskFlow.</p>
+
+            <form id="admin-login-form" class="admin-form">
+                <label for="admin-email">E-mail Administrativo</label>
+                <input 
+                    id="admin-email" 
+                    name="email" 
+                    type="email" 
+                    placeholder="admin@taskflow.com" 
+                    autocomplete="username" 
+                    required>
+
+                <label for="admin-password">Senha de Acesso</label>
+                <input 
+                    id="admin-password" 
+                    name="password" 
+                    type="password" 
+                    placeholder="••••••••" 
+                    autocomplete="current-password" 
+                    required>
+
+                <button class="admin-button admin-button--primary" type="submit" style="margin-top: 8px;">
+                    <i data-lucide="log-in" aria-hidden="true"></i>
+                    Entrar no painel
+                </button>
+
+                <div class="admin-feedback" data-admin-login-feedback role="alert"></div>
+            </form>
+
+            <div style="margin-top: 24px; text-align: center;">
+                <a href="../index.html" style="color: var(--admin-muted); font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                    <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+                    Voltar para o site público
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- =====================================================
+         PAINEL ADMINISTRATIVO (ÁREA AUTENTICADA)
+         ===================================================== -->
+    <div id="admin-app-view" class="admin-shell" hidden>
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navegação Administrativa">
+            <a class="admin-brand" href="index.html" aria-label="TaskFlow Admin">
+                <span class="admin-brand__icon">
+                    <i data-lucide="check-square" aria-hidden="true"></i>
+                </span>
+                Task<span>Flow</span>
+            </a>
+
+            <span class="admin-sidebar__label">Módulos Administrativos</span>
+            <nav class="admin-nav" aria-label="Menu principal">
+                <button class="admin-nav__link is-active" type="button" data-admin-section="dashboard">
+                    <i data-lucide="layout-dashboard" aria-hidden="true"></i> 
+                    Visão Geral
+                </button>
+                <button class="admin-nav__link" type="button" data-admin-section="faqs">
+                    <i data-lucide="message-circle-question" aria-hidden="true"></i> 
+                    Perguntas Frequentes
+                </button>
+                <button class="admin-nav__link" type="button" data-admin-section="categories">
+                    <i data-lucide="folders" aria-hidden="true"></i> 
+                    Categorias de FAQ
+                </button>
+            </nav>
+
+            <div class="admin-sidebar__footer">
+                <div class="admin-sidebar__note">
+                    <i data-lucide="lock" aria-hidden="true"></i> 
+                    Sessão Protegida (JWT)
+                </div>
+                <button class="admin-nav__link" type="button" data-admin-logout style="color: var(--admin-red);">
+                    <i data-lucide="log-out" aria-hidden="true"></i> 
+                    Encerrar Sessão
+                </button>
+            </div>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL -->
+        <div class="admin-main">
+            <!-- TOPBAR -->
+            <header class="admin-topbar">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <button class="admin-menu-toggle" type="button" data-admin-menu aria-label="Alternar menu lateral" aria-expanded="false">
+                        <i data-lucide="menu" aria-hidden="true"></i>
+                    </button>
+                    <div>
+                        <span class="admin-topbar__label">TaskFlow Control Center</span>
+                        <strong data-admin-page-title>Visão Geral</strong>
+                    </div>
+                </div>
+
+                <div class="admin-user">
+                    <span class="admin-avatar" data-admin-initials>AD</span>
+                    <div>
+                        <div data-admin-user-name style="font-weight: 700; color: var(--admin-navy);">Administrador</div>
+                        <small style="color: var(--admin-muted); font-size: 0.72rem;">Super Admin</small>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTEÚDO PRINCIPAL -->
+            <div class="admin-content">
+
+                <!-- 1. SEÇÃO: VISÃO GERAL (DASHBOARD) -->
+                <section class="admin-section is-active" data-admin-panel="dashboard">
+                    <header class="admin-heading">
+                        <span class="admin-kicker">Painel Geral</span>
+                        <h1>Estatísticas & Conteúdo</h1>
+                        <p>Visão consolidada das perguntas frequentes cadastradas no sistema TaskFlow.</p>
+                    </header>
+
+                    <div class="admin-metrics" data-admin-metrics>
+                        <!-- Métricas dinâmicas via JS -->
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 24px;">
+                        <article class="admin-card">
+                            <div class="admin-heading" style="margin-bottom: 16px;">
+                                <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 4px;">Ações Rápidas de Conteúdo</h3>
+                                <p style="font-size: 0.82rem;">Atalhos para gerenciar a base de conhecimento.</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button class="admin-button admin-button--primary" type="button" data-faq-new style="justify-content: flex-start;">
+                                    <i data-lucide="plus-circle"></i> Criar Nova Pergunta Frequente
+                                </button>
+                                <button class="admin-button admin-button--secondary" type="button" data-category-new style="justify-content: flex-start;">
+                                    <i data-lucide="folder-plus"></i> Cadastrar Nova Categoria
+                                </button>
+                                <a href="../index.html#faq" target="_blank" class="admin-button admin-button--secondary" style="justify-content: flex-start; text-decoration: none;">
+                                    <i data-lucide="external-link"></i> Visualizar FAQ Pública na Landing Page
+                                </a>
+                            </div>
+                        </article>
+
+                        <article class="admin-card">
+                            <div class="admin-heading" style="margin-bottom: 16px;">
+                                <h3 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 4px;">Resumo da Operação</h3>
+                                <p style="font-size: 0.82rem;">Organização das dúvidas frequentes da plataforma.</p>
+                            </div>
+                            <p style="font-size: 0.88rem; color: var(--admin-muted); line-height: 1.6;">
+                                Utilize o menu lateral para cadastrar novas perguntas frequentes, atualizar respostas existentes, gerenciar categorias ou ativar e inativar itens exibidos na página inicial.
+                            </p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- 2. SEÇÃO: PERGUNTAS FREQUENTES (FAQS) -->
+                <section class="admin-section" data-admin-panel="faqs" hidden>
+                    <header class="admin-heading admin-heading--row">
+                        <div>
+                            <span class="admin-kicker">Gestão de Dúvidas</span>
+                            <h1>Perguntas Frequentes (FAQs)</h1>
+                            <p>Visualize, crie, edite ou alterne o status das FAQs exibidas aos usuários.</p>
+                        </div>
+                        <button class="admin-button admin-button--primary" type="button" data-faq-new>
+                            <i data-lucide="plus" aria-hidden="true"></i> 
+                            Nova Pergunta
+                        </button>
+                    </header>
+
+                    <div class="admin-card">
+                        <!-- Toolbar de filtros -->
+                        <div class="admin-toolbar">
+                            <div class="admin-toolbar__filters">
+                                <div class="admin-search-wrap">
+                                    <i data-lucide="search" aria-hidden="true"></i>
+                                    <input 
+                                        class="admin-search" 
+                                        type="search" 
+                                        placeholder="Buscar pergunta ou resposta..." 
+                                        data-faq-search>
+                                </div>
+                                <select 
+                                    class="admin-filter" 
+                                    aria-label="Filtrar por Categoria" 
+                                    data-faq-category-filter>
+                                    <option value="">Todas as categorias</option>
+                                </select>
+                            </div>
+                            <span class="admin-count" data-faq-count>0 perguntas</span>
+                        </div>
+
+                        <!-- Feedback inline -->
+                        <div class="admin-feedback" data-faq-feedback role="status" style="margin-bottom: 12px;"></div>
+
+                        <!-- Tabela de FAQs -->
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%;">Pergunta & Resposta</th>
+                                        <th style="width: 20%;">Categoria</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%; text-align: center;">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-faq-list>
+                                    <!-- Inserido dinamicamente via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. SEÇÃO: CATEGORIAS DE FAQ -->
+                <section class="admin-section" data-admin-panel="categories" hidden>
+                    <header class="admin-heading admin-heading--row">
+                        <div>
+                            <span class="admin-kicker">Organização</span>
+                            <h1>Categorias de FAQ</h1>
+                            <p>Agrupe as dúvidas frequentes em tópicos e temas de navegação.</p>
+                        </div>
+                        <button class="admin-button admin-button--primary" type="button" data-category-new>
+                            <i data-lucide="plus" aria-hidden="true"></i> 
+                            Nova Categoria
+                        </button>
+                    </header>
+
+                    <div class="admin-card">
+                        <div class="admin-toolbar">
+                            <div class="admin-search-wrap">
+                                <i data-lucide="search" aria-hidden="true"></i>
+                                <input 
+                                    class="admin-search" 
+                                    type="search" 
+                                    placeholder="Buscar categoria..." 
+                                    data-category-search>
+                            </div>
+                            <span class="admin-count" data-category-count>0 categorias</span>
+                        </div>
+
+                        <div class="admin-feedback" data-category-feedback role="status" style="margin-bottom: 12px;"></div>
+
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 60%;">Nome da Categoria</th>
+                                        <th style="width: 20%;">Status</th>
+                                        <th style="width: 20%; text-align: center;">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-category-list>
+                                    <!-- Inserido dinamicamente via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+         MODAL / DIALOG: CRIAR & EDITAR FAQ
+         ===================================================== -->
+    <dialog class="admin-dialog" id="faq-dialog">
+        <form method="dialog" class="admin-dialog__card" data-faq-form>
+            <div class="admin-dialog__header">
+                <div>
+                    <span class="admin-kicker">Gerenciador de FAQ</span>
+                    <h2 data-faq-dialog-title>Nova Pergunta Frequente</h2>
+                </div>
+                <button class="admin-dialog__close" type="button" aria-label="Fechar janela">
+                    <i data-lucide="x" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <input type="hidden" name="id">
+
+            <label for="faq-category">Categoria do Tópico</label>
+            <select id="faq-category" name="faqs_category_id" required>
+                <!-- Preenchido dinamicamente -->
+            </select>
+
+            <label for="faq-question">Pergunta</label>
+            <input 
+                id="faq-question" 
+                name="question" 
+                maxlength="255" 
+                placeholder="Ex: Como altero minha senha de acesso?" 
+                required>
+
+            <label for="faq-answer">Resposta Detalhada</label>
+            <textarea 
+                id="faq-answer" 
+                name="answer" 
+                rows="5" 
+                placeholder="Explique a solução de forma clara e amigável..." 
+                required></textarea>
+
+            <div class="admin-dialog__actions">
+                <button class="admin-button admin-button--secondary" type="button" data-dialog-cancel>
+                    Cancelar
+                </button>
+                <button class="admin-button admin-button--primary" type="submit" data-faq-save>
+                    Salvar Pergunta
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- =====================================================
+         MODAL / DIALOG: CRIAR & EDITAR CATEGORIA
+         ===================================================== -->
+    <dialog class="admin-dialog" id="category-dialog">
+        <form method="dialog" class="admin-dialog__card" data-category-form>
+            <div class="admin-dialog__header">
+                <div>
+                    <span class="admin-kicker">Classificação</span>
+                    <h2 data-category-dialog-title>Nova Categoria</h2>
+                </div>
+                <button class="admin-dialog__close" type="button" aria-label="Fechar janela">
+                    <i data-lucide="x" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <input type="hidden" name="id">
+
+            <label for="category-name">Nome da Categoria</label>
+            <input 
+                id="category-name" 
+                name="name" 
+                maxlength="255" 
+                placeholder="Ex: Faturamento & Cobrança" 
+                required>
+
+            <div class="admin-dialog__actions">
+                <button class="admin-button admin-button--secondary" type="button" data-dialog-cancel>
+                    Cancelar
+                </button>
+                <button class="admin-button admin-button--primary" type="submit" data-category-save>
+                    Salvar Categoria
+                </button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Admin App Script -->
+    <script type="module" src="../views/assets/admin/scripts/admin-app.js"></script>
+</body>
+</html>

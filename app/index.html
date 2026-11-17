@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard do TaskFlow — Gerencie suas tarefas, prazos, anexos e perfil.">
+    <title>Dashboard — TaskFlow</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234F46E5'/><path d='M9 16l5 5 9-9' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Shared Toast & Prototypic Form Styles -->
+    <link rel="stylesheet" href="../views/assets/_common/styles/toast.css">
+
+    <!-- App Styles -->
+    <link rel="stylesheet" href="../views/assets/app/styles/app.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- SIDEBAR -->
+        <aside id="app-sidebar" class="app-sidebar" aria-label="Navegação da aplicação">
+            <a href="index.html" class="app-brand" aria-label="TaskFlow — Página inicial">
+                <i data-lucide="check-square" style="color: var(--primary);"></i>
+                Task<span>Flow</span>
+            </a>
+
+            <nav class="app-nav">
+                <a href="#dashboard" class="app-nav__link is-active" data-app-filter="all" data-app-page-link="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    Dashboard
+                </a>
+                <a href="#pendentes" class="app-nav__link" data-app-filter="pending" data-app-page-link="dashboard">
+                    <i data-lucide="clock"></i>
+                    Em Andamento
+                </a>
+                <a href="#concluidas" class="app-nav__link" data-app-filter="completed" data-app-page-link="dashboard">
+                    <i data-lucide="check-circle-2"></i>
+                    Concluídas
+                </a>
+                <a href="#profile" class="app-nav__link" data-app-page-link="profile">
+                    <i data-lucide="user-round"></i>
+                    Meu Perfil
+                </a>
+                <a href="../index.html" class="app-nav__link">
+                    <i data-lucide="globe"></i>
+                    Site Público
+                </a>
+            </nav>
+
+            <div class="app-sidebar__footer">
+                <button type="button" class="app-nav__link" data-app-logout style="color: #DC2626;">
+                    <i data-lucide="log-out"></i>
+                    Sair da Conta
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN AREA -->
+        <div class="app-main">
+            <!-- TOPBAR -->
+            <header class="app-topbar">
+                <div style="font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="layout-grid" style="width: 18px; height: 18px; color: var(--primary);"></i>
+                    <span>Painel de Tarefas</span>
+                </div>
+
+                <div class="app-profile" data-open-profile style="cursor: pointer;" title="Acessar Meu Perfil">
+                    <div class="app-avatar" data-user-avatar>
+                        <span data-user-initials>US</span>
+                        <img data-user-photo alt="Foto do usuário" hidden>
+                    </div>
+                    <div>
+                        <div class="app-profile__name" data-user-name>Carregando...</div>
+                        <div class="app-profile__role">Conta Pessoal</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE 1: DASHBOARD DE TAREFAS -->
+            <main id="dashboard-page" class="app-content" data-app-page="dashboard">
+                <header class="app-page-heading">
+                    <div>
+                        <h1>Olá, <span data-user-first-name>Usuário</span>! 👋</h1>
+                        <p>Acompanhe suas tarefas, prazos e anexos em um único lugar.</p>
+                    </div>
+
+                    <button type="button" class="btn-new-task" data-action-new-task id="btn-open-task-dialog">
+                        <i data-lucide="plus"></i>
+                        Nova Tarefa
+                    </button>
+                </header>
+
+                <!-- METRICS -->
+                <div class="metrics-row">
+                    <div class="metric-card">
+                        <h4>Total de Tarefas</h4>
+                        <div class="metric-val" id="metric-total-tasks">0</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Concluídas</h4>
+                        <div class="metric-val" id="metric-completed-tasks" style="color: #10B981;">0</div>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Em Andamento</h4>
+                        <div class="metric-val" id="metric-pending-tasks" style="color: #F59E0B;">0</div>
+                    </div>
+                </div>
+
+                <!-- TASKS LIST -->
+                <section class="tasks-panel">
+                    <div class="tasks-panel-header">
+                        <h2>Minhas Tarefas</h2>
+                        <span class="tasks-count-badge" id="tasks-count-badge">0 tarefas</span>
+                    </div>
+
+                    <!-- BARRA DE PESQUISA E FILTROS -->
+                    <div class="tasks-toolbar">
+                        <div class="tasks-search-box">
+                            <i data-lucide="search" style="width: 18px; height: 18px; color: var(--text-muted);"></i>
+                            <input 
+                                type="search" 
+                                id="task-search-input" 
+                                class="tasks-search-input" 
+                                placeholder="Buscar tarefa por título ou descrição...">
+                        </div>
+
+                        <div class="tasks-filter-tabs" role="tablist" aria-label="Filtro de tarefas">
+                            <button type="button" class="task-filter-tab is-active" data-status-filter="all">Todas</button>
+                            <button type="button" class="task-filter-tab" data-status-filter="pending">Em Andamento</button>
+                            <button type="button" class="task-filter-tab" data-status-filter="completed">Concluídas</button>
+                        </div>
+                    </div>
+
+                    <div id="tasks-list-container" class="tasks-list-wrap">
+                        <div style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                            <div class="tasks-spinner"></div>
+                            <p style="margin-top: 0.8rem;">Carregando tarefas...</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- PAGE 2: MEU PERFIL & UPLOAD DE FOTO (ETAPA 07 - PARTE A) -->
+            <section id="profile-page" class="app-content" data-app-page="profile" hidden aria-labelledby="profile-heading">
+                <header class="app-page-heading">
+                    <div>
+                        <h1 id="profile-heading">Meu Perfil</h1>
+                        <p>Atualize seus dados cadastrais, senha e foto de perfil.</p>
+                    </div>
+                </header>
+
+                <div class="profile-grid">
+                    <!-- Card 1: Dados Pessoais -->
+                    <section class="tasks-panel" aria-labelledby="profile-data-title">
+                        <div class="tasks-panel-header">
+                            <div>
+                                <h2 id="profile-data-title">Dados Pessoais</h2>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">Altere seu nome, e-mail ou senha de acesso.</p>
+                            </div>
+                        </div>
+
+                        <form id="profile-data-form" class="profile-form" data-profile-form novalidate>
+                            <div class="profile-form-row">
+                                <div class="app-form-group">
+                                    <label for="profile-name">Nome Completo *</label>
+                                    <input id="profile-name" type="text" name="name" autocomplete="name" required maxlength="255">
+                                </div>
+                                <div class="app-form-group">
+                                    <label for="profile-email">E-mail *</label>
+                                    <input id="profile-email" type="email" name="email" autocomplete="email" required maxlength="255">
+                                </div>
+                            </div>
+
+                            <fieldset class="profile-password-fieldset">
+                                <legend>Alterar Senha <span>(opcional)</span></legend>
+                                <div class="profile-form-row">
+                                    <div class="app-form-group">
+                                        <label for="profile-current-password">Senha Atual</label>
+                                        <input id="profile-current-password" type="password" name="current_password" autocomplete="current-password">
+                                    </div>
+                                    <div class="app-form-group">
+                                        <label for="profile-new-password">Nova Senha</label>
+                                        <input id="profile-new-password" type="password" name="new_password" autocomplete="new-password" minlength="6">
+                                    </div>
+                                </div>
+                                <small>Preencha os dois campos apenas se desejar alterar sua senha atual (mínimo de 6 caracteres).</small>
+                            </fieldset>
+
+                            <div class="profile-form-footer">
+                                <p class="profile-feedback" data-profile-feedback role="status" aria-live="polite"></p>
+                                <button type="submit" class="app-btn-submit">Salvar Dados</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Card 2: Foto do Usuário Autenticado -->
+                    <section class="tasks-panel" aria-labelledby="profile-photo-title">
+                        <div class="tasks-panel-header">
+                            <div>
+                                <h2 id="profile-photo-title">Foto do Perfil</h2>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">Selecione uma imagem para identificar sua conta.</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-photo-box">
+                            <div class="profile-photo-preview" data-profile-photo-preview>
+                                <span data-profile-initials>US</span>
+                                <img data-profile-photo alt="Prévia da foto de perfil" hidden>
+                            </div>
+                            <div class="profile-photo-info">
+                                <strong>Escolha uma imagem para seu perfil</strong>
+                                <p>Formatos aceitos: JPG, PNG ou WEBP. Tamanho máximo permitido: 5 MB.</p>
+                            </div>
+                        </div>
+
+                        <form id="profile-photo-form" class="profile-form" data-profile-photo-form novalidate>
+                            <div class="app-form-group">
+                                <label for="profile-photo-input">Selecionar Foto</label>
+                                <input 
+                                    id="profile-photo-input" 
+                                    class="profile-file-input" 
+                                    type="file" 
+                                    name="photo" 
+                                    accept="image/jpeg,image/png,image/webp" 
+                                    required 
+                                    data-profile-photo-input>
+                            </div>
+
+                            <div class="profile-form-footer">
+                                <p class="profile-feedback" data-profile-photo-feedback role="status" aria-live="polite"></p>
+                                <button type="submit" class="app-btn-submit">Atualizar Foto</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- MODAL / DIALOG: CRIAR & EDITAR TAREFA -->
+    <dialog id="task-dialog" class="app-dialog">
+        <form id="task-dialog-form" class="app-dialog-card" novalidate>
+            <input type="hidden" id="task-id" name="id" value="">
+
+            <div class="app-dialog-header">
+                <h3 id="task-dialog-title">Nova Tarefa</h3>
+                <button type="button" class="app-dialog-close" data-dialog-close aria-label="Fechar janela">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div class="app-form-group">
+                <label for="task-title">Título da Tarefa *</label>
+                <input id="task-title" name="title" placeholder="Ex: Finalizar relatório mensal" required autocomplete="off">
+            </div>
+
+            <div class="app-form-group">
+                <label for="task-desc">Descrição Detalhada</label>
+                <textarea id="task-desc" name="description" rows="3" placeholder="Detalhes, anotações ou requisitos da entrega..."></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="app-form-group">
+                    <label for="task-priority">Prioridade</label>
+                    <select id="task-priority" name="priority">
+                        <option value="Alta">Alta</option>
+                        <option value="Média" selected>Média</option>
+                        <option value="Baixa">Baixa</option>
+                    </select>
+                </div>
+                <div class="app-form-group">
+                    <label for="task-due-date">Data Limite</label>
+                    <input id="task-due-date" name="due_date" type="date">
+                </div>
+            </div>
+
+            <div class="app-dialog-actions">
+                <button type="button" class="app-btn-cancel" data-dialog-close>Cancelar</button>
+                <button type="submit" class="app-btn-submit" id="task-submit-btn">Salvar Tarefa</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- MODAL / DIALOG: GALERIA DE IMAGENS DA TAREFA (1:N - ETAPA 07 PARTE B) -->
+    <dialog id="task-gallery-dialog" class="app-dialog app-dialog--lg">
+        <div class="app-dialog-card">
+            <div class="app-dialog-header">
+                <div>
+                    <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary);">Galeria da Tarefa (1:N)</span>
+                    <h3 id="gallery-task-title">Imagens da Tarefa</h3>
+                </div>
+                <button type="button" class="app-dialog-close" data-gallery-close aria-label="Fechar galeria">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <!-- Formulário de Upload de Imagens -->
+            <form id="task-gallery-form" class="gallery-upload-form" novalidate>
+                <div class="gallery-upload-grid">
+                    <div class="app-form-group">
+                        <label for="task-images-input">Adicionar Imagem(ns) (JPG, PNG ou WEBP • máx. 5 MB)</label>
+                        <input 
+                            id="task-images-input" 
+                            class="profile-file-input" 
+                            type="file" 
+                            name="images[]" 
+                            accept="image/jpeg,image/png,image/webp" 
+                            multiple 
+                            required>
+                    </div>
+                    <div class="app-form-group">
+                        <label for="task-images-alt">Texto Alternativo / Legenda (opcional)</label>
+                        <input 
+                            id="task-images-alt" 
+                            type="text" 
+                            name="alt_text" 
+                            maxlength="255" 
+                            placeholder="Ex: Comprovante ou tela de referência">
+                    </div>
+                </div>
+
+                <!-- Prévia das imagens selecionadas antes do envio -->
+                <div id="task-images-preview" class="gallery-preview-row" hidden></div>
+
+                <div class="gallery-upload-actions">
+                    <p class="profile-feedback" data-gallery-feedback role="status" aria-live="polite"></p>
+                    <button type="submit" class="app-btn-submit" id="btn-upload-task-images">
+                        Enviar Imagem(ns)
+                    </button>
+                </div>
+            </form>
+
+            <!-- Listagem de Imagens Persistidas -->
+            <div class="gallery-list-section">
+                <div class="gallery-list-header">
+                    <h4>Imagens Salvas nesta Tarefa</h4>
+                    <span class="tasks-count-badge" id="gallery-count-badge">0 imagens</span>
+                </div>
+
+                <div id="task-gallery-list" class="gallery-items-grid">
+                    <!-- Renderizado via JS -->
+                </div>
+            </div>
+
+            <div class="app-dialog-actions">
+                <button type="button" class="app-btn-cancel" data-gallery-close>Fechar</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Scripts com ES Modules -->
+    <script type="module" src="../views/assets/app/scripts/app.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+</html>
